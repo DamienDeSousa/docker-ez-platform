@@ -1,0 +1,38 @@
+version: '3.4'
+
+# web server
+# php
+services: 
+    db:
+        image: ${DBMS}:${DBMS_VERSION}
+        environment: 
+            # Change these lines to your specific needs
+            # Don't forget to edit the .env file to customize your values
+            - MYSQL_ROOT_PASSWORD=${DBMS_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${DBMS_DATABASE_NAME}
+            - MYSQL_USER=${DBMS_USER}
+            - MYSQL_PASSWORD=${DBMS_PASSWORD}
+        volumes: 
+            - type: volume
+              source: db-data
+              target: ${DBMS_TARGET_VOLUME}
+        ports: 
+            - 3307:3306
+
+    php:
+        depends_on: 
+            - db
+        build:
+            context: .
+            dockerfile: ./dockerfiles/php/Dockerfile
+            args:
+                - version=${PHP_VERSION}
+                - os=${PHP_OS}
+                - docker_php_ext=${PHP_DB_EXT}
+                - docker_php_external_extension=${DOCKER_PHP_EXTERNAL_EXTENSION}
+                - classic_php_extension=${PHP_IMAGE_EXT} ${CLASSIC_PHP_EXTENSION}
+                - package_manager=${OS_PACKAGE_MANAGER}
+                - extension_package=${PHP_VERSION}
+
+volumes: 
+    db-data: {}
