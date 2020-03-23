@@ -1,7 +1,5 @@
 version: '3.4'
 
-# web server
-# php
 services: 
     db:
         image: ${DBMS}:${DBMS_VERSION}
@@ -9,9 +7,9 @@ services:
             # Change these lines to your specific needs
             # Don't forget to edit the .env file to customize your values
             - MYSQL_ROOT_PASSWORD=${DBMS_ROOT_PASSWORD}
-            - MYSQL_DATABASE=${DBMS_DATABASE_NAME}
-            - MYSQL_USER=${DBMS_USER}
-            - MYSQL_PASSWORD=${DBMS_PASSWORD}
+            - MYSQL_DATABASE=${DB_NAME}
+            - MYSQL_USER=${DB_USER}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
         volumes: 
             - type: volume
               source: db-data
@@ -28,11 +26,16 @@ services:
             args:
                 - version=${PHP_VERSION}
                 - os=${PHP_OS}
-                - docker_php_ext=${PHP_DB_EXT}
-                - docker_php_external_extension=${DOCKER_PHP_EXTERNAL_EXTENSION}
-                - classic_php_extension=${PHP_IMAGE_EXT} ${CLASSIC_PHP_EXTENSION}
+                - docker_php_ext=${PHP_DB_EXT} ${PHP_MANDATORY_EXT} ${PHP_IMAGE_EXT}
+                - classic_php_ext= ${CLASSIC_PHP_EXTENSION}
                 - package_manager=${OS_PACKAGE_MANAGER}
                 - extension_package=${PHP_VERSION}
+        volumes: 
+            - ./ez-platform:/var/www/ez-platform:rw
+            - ./architecture/install-files/parameters.yml:/var/www/ez-platform/app/config/parameters.yml
+            - ./architecture/install-files/auth.json:/var/www/ez-platform/auth.json
+    
+    # server:
 
 volumes: 
     db-data: {}
