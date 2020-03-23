@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    env(SYMFONY_SECRET): ThisEzPlatformTokenIsNotSoSecret_PleaseChangeIt
+    env(DATABASE_DRIVER): pdo_mysql
+    env(DATABASE_HOST): db
+    env(DATABASE_PORT): null
+    env(DATABASE_NAME): api
+    env(DATABASE_USER): dades
+    env(DATABASE_PASSWORD): '!changeMe!'
+    env(DATABASE_CHARSET): utf8mb4
+    env(DATABASE_COLLATION): utf8mb4_unicode_520_ci
+    env(DATABASE_VERSION): 5.7.29
